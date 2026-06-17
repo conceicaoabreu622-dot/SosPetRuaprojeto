@@ -1,0 +1,75 @@
+{% extends 'SosPet/base.html' %}
+
+{% block content %}
+<!-- Cabeçalho do Feed e Formulário de Filtros (Item 2 do Resumo) -->
+<div class="row mb-4 align-items-center">
+    <div class="col-md-5">
+        <h2 class="fw-bold text-secondary">🐾 Feed de Adoção</h2>
+        <p class="text-muted mb-0">Encontre animais disponíveis para adoção responsável ou lar temporário.</p>
+    </div>
+
+    <!-- Formulário com Filtros Avançados (Bootstrap Forms) -->
+    <div class="col-md-7">
+        <form method="GET" action="{% url 'pet_list' %}" class="d-flex gap-2 flex-wrap flex-md-nowrap mt-3 mt-md-0">
+            <select name="especie" class="form-select">
+                <option value="">Todas as Espécies</option>
+                <option value="CAO" {% if request.GET.especie == 'CAO' %}selected{% endif %}>Cães</option>
+                <option value="GATO" {% if request.GET.especie == 'GATO' %}selected{% endif %}>Gatos</option>
+            </select>
+
+            <input type="text" name="bairro" class="form-control" placeholder="Buscar por Bairro..." value="{{ request.GET.bairro|default:'' }}">
+
+            <button class="btn btn-success px-4" type="submit">Filtrar</button>
+
+            {% if request.GET.especie or request.GET.bairro %}
+                <a href="{% url 'pet_list' %}" class="btn btn-outline-secondary">Limpar</a>
+            {% endif %}
+        </form>
+    </div>
+</div>
+
+<!-- Grid de Exibição dos Animais (Bootstrap Grid System) -->
+<div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-4">
+    {% for pet in pets %}
+        <div class="col">
+            <div class="card h-100 shadow-sm border-0">
+                <!-- Foto do animal cadastrada no banco de dados -->
+                {% if pet.foto_pet %}
+                    <img src="{{ pet.foto_pet.url }}" class="card-img-top img-pet-fix" alt="Foto de {{ pet.nome }}">
+                {% else %}
+                    <img src="https://placeholder.com" class="card-img-top img-pet-fix" alt="Sem foto">
+                {% endif %}
+
+                <div class="card-body">
+                    <!-- Nome do animal e etiqueta de modalidade (Adoção ou Lar Temporário) -->
+                    <h5 class="card-title fw-bold text-success">
+                        {{ pet.nome }}
+                        {% if pet.modalidade == 'LAR_TEMP' %}
+                            <span class="badge bg-warning text-dark float-end fs-6">Lar Temporário</span>
+                        {% else %}
+                            <span class="badge bg-info text-white float-end fs-6">Adoção</span>
+                        {% endif %}
+                    </h5>
+
+                    <!-- Informações técnicas detalhadas exigidas no resumo -->
+                    <p class="card-text mb-1"><strong>Porte:</strong> {{ pet.get_porte_display }}</p>
+                    <p class="card-text mb-1"><strong>Região:</strong> {{ pet.bairro_localizacao }}</p>
+                    <p class="card-text mb-1"><strong>Temperamento:</strong> {{ pet.temperamento }}</p>
+                    <hr class="my-2">
+                    <p class="card-text text-muted small"><strong>Histórico de Saúde:</strong> {{ pet.situacao_medica }}</p>
+
+                    <!-- Botão de Ação que simula o interesse na rede colaborativa -->
+                    <button class="btn btn-outline-success w-100 mt-2 fw-bold" onclick="alert('Pedido enviado para a ONG/Responsável! Fique atento ao seu e-mail.')">
+                        Quero Adoção Responsável
+                    </button>
+                </div>
+            </div>
+        </div>
+    {% empty %}
+        <!-- Mensagem amigável caso nenhum animal corresponda aos filtros -->
+        <div class="col-12 text-center py-5">
+            <h4 class="text-muted">Nenhum animal cadastrado ou encontrado com esses filtros. 🐾</h4>
+        </div>
+    {% endfor %}
+</div>
+{% endblock %}

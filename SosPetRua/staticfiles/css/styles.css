@@ -1,0 +1,24 @@
+/* Padroniza as imagens dos animais no feed */
+.img-pet-fix {
+    height: 220px;
+    object-fit: cover;
+}
+
+/* Efeito moderno de elevação ao passar o mouse nos cards */
+.hover-effect {
+    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+}
+.hover-effect:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15) !important;
+}
+
+/* Ajustes finos para telas de celulares pequenos */
+@media (max-width: 576px) {
+    .text-mobile-center {
+        text-align: center;
+    }
+    .btn-mobile-full {
+        width: 100%;
+    }
+}
