@@ -1,0 +1,72 @@
+{% extends 'SosPet/base.html' %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="card shadow border-0">
+            <!-- Cabeçalho de Alerta Visual (Urgência) -->
+            <div class="card-header bg-danger text-white fw-bold py-3">
+                🚨 Reportar Animal em Situação de Risco
+            </div>
+
+            <div class="card-body p-4">
+                <!-- Aviso explicativo da Regra de Negócio Antitrote -->
+                <div class="alert alert-warning small py-2 mb-4">
+                    <strong>Aviso Importante:</strong> Para evitar trotes na nossa rede de apoio, o registro de ocorrências exige obrigatoriamente o envio de uma foto comprobatória da situação.
+                </div>
+
+                <!-- Formulário com suporte a envio de arquivos binários (enctype) -->
+                <form method="POST" enctype="multipart/form-data" id="formOcorrencia" onsubmit="validarFotoObrigatoria(event)">
+                    {% csrf_token %}
+
+                    <!-- Campo de Localização -->
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">Localização ou Ponto de Referência</label>
+                        <input type="text" name="localizacao" class="form-control" placeholder="Ex: Av. Principal, próximo ao mercado da esquina" required>
+                    </div>
+
+                    <!-- Campo de Descrição -->
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">Descrição dos Fatos</label>
+                        <textarea name="descricao" class="form-control" rows="4" placeholder="Descreva os maus-tratos observados ou o estado físico do animal..." required></textarea>
+                    </div>
+
+                    <!-- Campo do Arquivo de Imagem Obrigatório -->
+                    <div class="mb-4">
+                        <label class="form-label fw-bold text-danger">Anexar Imagem Comprobatória *</label>
+                        <input class="form-control" type="file" id="fotoInput" name="foto" accept="image/*">
+
+                        <!-- Mensagem de erro via JavaScript caso o usuário tente enviar sem foto -->
+                        <div class="text-danger small mt-1 d-none" id="mensagemErroFoto">
+                            Você precisa anexar uma foto para validar e salvar a denúncia!
+                        </div>
+                    </div>
+
+                    <!-- Botão de Envio de Ocorrência -->
+                    <button type="submit" class="btn btn-danger w-100 fw-bold py-2 shadow-sm">
+                        Enviar Ocorrência para Resgate
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Lógica JavaScript do Tópico 3.4 para segurança cliente-servidor -->
+<script>
+function validarFotoObrigatoria(event) {
+    const fotoInput = document.getElementById('fotoInput');
+    const erroMsg = document.getElementById('mensagemErroFoto');
+
+    // Verifica se o usuário não selecionou nenhum arquivo
+    if (fotoInput.files.length === 0) {
+        event.preventDefault(); // Impede o formulário de enviar os dados
+        erroMsg.classList.remove('d-none'); // Exibe a mensagem em vermelho
+        fotoInput.classList.add('is-invalid'); // Adiciona a borda vermelha do Bootstrap
+    } else {
+        erroMsg.classList.add('d-none');
+        fotoInput.classList.remove('is-invalid');
+    }
+}
+</script>
+{% endblock %}

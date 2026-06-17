@@ -1,0 +1,71 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SOS Pet Rua</title>
+
+    <!-- 1. Bootstrap 5 CSS via CDN -->
+    <link href="https://jsdelivr.net" rel="stylesheet">
+
+    <!-- 2. Chamada Corrigida em Inglês (static) -->
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+</head>
+<body class="bg-light d-flex flex-column min-vh-100">
+
+    <!-- Navbar do Bootstrap (Menu de Navegação) -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-success shadow-sm">
+        <div class="container">
+            <!-- Link da Logomarca apontando para a rota inicial do Django -->
+            <a class="navbar-brand fw-bold" href="{% url 'pet_list' %}">🐾 SOS Pet Rua</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <!-- LINKS DO MENU CONFIGURADOS COM AS ROTAS DO DJANGO -->
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'pet_list' %}">Feed de Adoção</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'fazer_denuncia' %}">🚨 Denunciar</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href=""{% url 'cadastro' %}">Cadastrar-se</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Sistema de Alertas do Django (Exibe tarjas de sucesso ou erro na tela) -->
+    <div class="container mt-3">
+        {% if messages %}
+            {% for message in messages %}
+                <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                    {{ message }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            {% endfor %}
+        {% endif %}
+    </div>
+
+    <!-- Conteúdo Dinâmico (Onde as páginas list, cadastro e fazer_denuncia vão se encaixar) -->
+    <main class="container my-4 flex-grow-1">
+        {% block content %}
+        {% endblock %}
+    </main>
+
+    <!-- Rodapé Fixo na Base -->
+    <footer class="bg-dark text-white text-center py-3 mt-auto">
+        <p class="mb-0 small">&copy; 2026 SOS Pet Rua - Rede Colaborativa de Apoio Animal.</p>
+    </footer>
+
+    <!-- 3. Bootstrap 5 JavaScript via CDN -->
+    <script src="https://jsdelivr.net"></script>
+
+    <!-- 4. Chamada Corrigida do seu JavaScript Personalizado via Django Static -->
+    <script src="{% static 'js/scripts.js' %}"></script>
+</body>
+</html>

@@ -1,0 +1,82 @@
+{% extends 'SosPet/base.html' %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <div class="card shadow border-0">
+            <!-- Cabeçalho do Formulário -->
+            <div class="card-header bg-success text-white text-center fw-bold py-3">
+                Criar Conta na Rede Colaborativa
+            </div>
+
+            <div class="card-body p-4">
+                <form method="POST" action="{% url 'cadastro' %}">
+                    {% csrf_token %}
+
+                    <!-- Campo Nome -->
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">Nome Completo / Razão Social</label>
+                        <input type="text" name="nome" class="form-control" placeholder="Digite seu nome ou da instituição" required>
+                    </div>
+
+                    <!-- Campo E-mail -->
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">E-mail Corporativo ou Pessoal</label>
+                        <input type="email" name="email" class="form-control" placeholder="exemplo@email.com" required>
+                    </div>
+
+                    <!-- Seletor dos Níveis de Acesso (Mapeado do Público-Alvo) -->
+                    <div class="mb-3">
+                        <label class="form-label fw-bold text-success">Selecione seu Perfil de Atuação</label>
+                        <select name="tipo_usuario" class="form-select border-success fw-bold" id="seletorPerfil" onchange="gerenciarCamposHomologacao()">
+                            <option value="CIDADAO">Cidadão Comum / Protetor Independente</option>
+                            <option value="ONG">ONG / Instituição de Acolhimento</option>
+                            <option value="VETERINARIO">Médico(a) Veterinário(a) / Clínica</option>
+                        </select>
+                    </div>
+
+                    <!-- Bloco de Homologação Invisível: Controlado Dinamicamente via JavaScript -->
+                    <div class="mb-4 d-none p-3 bg-light border rounded shadow-sm" id="blocoHomologacao">
+                        <label class="form-label fw-bold text-dark" id="rotuloDocumento">Documento Técnico</label>
+                        <input type="text" name="documento" class="form-control border-dark" id="inputDocumento">
+                        <div class="form-text text-muted">
+                            Apenas entidades homologadas e validadas gerenciam campanhas de arrecadação financeira ou triagens médicas.
+                        </div>
+                    </div>
+
+                    <!-- Botão de Cadastro -->
+                    <button type="submit" class="btn btn-success w-100 fw-bold py-2 shadow-sm">
+                        Concluir Cadastro Seguro
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Manipulação dinâmica da interface via JS (Tópico 3.4 do Relatório) -->
+<script>
+function gerenciarCamposHomologacao() {
+    const perfil = document.getElementById('seletorPerfil').value;
+    const bloco = document.getElementById('blocoHomologacao');
+    const rotulo = document.getElementById('rotuloDocumento');
+    const input = document.getElementById('inputDocumento');
+
+    if (perfil === 'ONG') {
+        bloco.classList.remove('d-none'); // Torna o bloco visível
+        rotulo.innerText = "CNPJ Oficial da Instituição *";
+        input.placeholder = "00.000.000/0001-00";
+        input.required = true; // Torna o campo obrigatório no navegador
+    } else if (perfil === 'VETERINARIO') {
+        bloco.classList.remove('d-none'); // Torna o bloco visível
+        rotulo.innerText = "Registro Profissional CRMV *";
+        input.placeholder = "Ex: CRMV-PA 12345";
+        input.required = true; // Torna o campo obrigatório no navegador
+    } else {
+        bloco.classList.add('d-none'); // Oculta o bloco para cidadãos comuns
+        input.required = false; // Retira a obrigatoriedade
+        input.value = ""; // Limpa qualquer texto digitado
+    }
+}
+</script>
+{% endblock %}

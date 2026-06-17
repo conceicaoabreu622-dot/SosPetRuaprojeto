@@ -1,0 +1,77 @@
+{% extends 'SosPet/base.html' %}
+
+{% block content %}
+<!-- Cabeçalho do Feed e Formulário de Filtros (Item 2 do Resumo) -->
+<div class="row mb-4 align-items-center">
+    <div class="col-md-5">
+        <h2 class="fw-bold text-secondary">🐾 Feed de Adoção</h2>
+        <p class="text-muted mb-0">Encontre animais disponíveis para adoção responsável ou lar temporário.</p>
+    </div>
+
+    <!-- Formulário com Filtros Avançados (Bootstrap Forms Adaptado para Frontend) -->
+    <div class="col-md-7">
+        <div class="d-flex gap-2 flex-wrap flex-md-nowrap mt-3 mt-md-0">
+            <select id="filtroEspecie" class="form-select">
+                <option value="">Todas as Espécies</option>
+                <option value="CAO">Cães</option>
+                <option value="GATO">Gatos</option>
+            </select>
+
+            <input type="text" id="filtroBairro" class="form-control" placeholder="Buscar por Bairro...">
+
+            <button class="btn btn-success px-4" onclick="filtrarPets()">Filtrar</button>
+        </div>
+    </div>
+</div>
+
+<!-- Grid de Exibição dos Animais (Bootstrap Grid System com Cards Fictícios para Teste) -->
+<div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-4">
+
+    <!-- Card do Pet 1 (Cão) -->
+    <div class="col pet-card-item" data-especie="CAO" data-bairro="Centro">
+        <div class="card h-100 shadow-sm border-0 hover-effect">
+            <img src="https://unsplash.com" class="card-img-top img-pet-fix" alt="Foto do Cão">
+            <div class="card-body">
+                <h5 class="card-title fw-bold text-success">
+                    Rex
+                    <span class="badge bg-warning text-dark float-end fs-6">Lar Temporário</span>
+                </h5>
+
+                <p class="card-text mb-1"><strong>Porte:</strong> Médio</p>
+                <p class="card-text mb-1"><strong>Região:</strong> Centro</p>
+                <p class="card-text mb-1"><strong>Temperamento:</strong> Dócil e brincalhão</p>
+                <hr class="my-2">
+                <p class="card-text text-muted small"><strong>Histórico de Saúde:</strong> V10 e Raiva aplicadas.</p>
+
+                <button class="btn btn-outline-success w-100 mt-2 fw-bold" onclick="alert('Pedido enviado para a ONG/Responsável! Fique atento ao seu e-mail.')">
+                    Quero Adoção Responsável
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Card do Pet 2 (Gato) -->
+    <div class="col pet-card-item" data-especie="GATO" data-bairro="Zona Sul">
+        <div class="card h-100 shadow-sm border-0 hover-effect">
+            <img src="https://unsplash.com" class="card-img-top img-pet-fix" alt="Foto do Gato">
+            <div class="card-body">
+                <h5 class="card-title fw-bold text-success">
+                    Mia
+                    <span class="badge bg-info text-white float-end fs-6">Adoção</span>
+                </h5>
+
+                <p class="card-text mb-1"><strong>Porte:</strong> Pequeno</p>
+                <p class="card-text mb-1"><strong>Região:</strong> Zona Sul</p>
+                <p class="card-text mb-1"><strong>Temperamento:</strong> Calma e dócil</p>
+                <hr class="my-2">
+                <p class="card-text text-muted small"><strong>Histórico de Saúde:</strong> Castrada e vermifugada.</p>
+
+                <button class="btn btn-outline-success w-100 mt-2 fw-bold" onclick="alert('Pedido enviado para a ONG/Responsável! Fique atento ao seu e-mail.')">
+                    Quero Adoção Responsável
+                </button>
+            </div>
+        </div>
+    </div>
+
+</div>
+{% endblock %}
